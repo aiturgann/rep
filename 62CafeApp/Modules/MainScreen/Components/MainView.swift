@@ -126,10 +126,6 @@ class MainView: UIView {
         )
     }
     
-    func set() {
-        
-    }
-    
 }
 
 extension MainView: UICollectionViewDataSource {
