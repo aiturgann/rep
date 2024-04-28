@@ -30,6 +30,7 @@ class SectionsCollectionViewCell: UICollectionViewCell {
     }
     
     private func setup() {
+        layer.cornerRadius = 12
         setupSubviews()
         setupConstraints()
     }
@@ -48,7 +49,11 @@ class SectionsCollectionViewCell: UICollectionViewCell {
         )
     }
     
-    func setData(model: SectionsModel) {
-        titleLabel.text = model.title
+    func fill(with item: CategoryModel) {
+        titleLabel.text = item.categoryName
+    }
+    
+    func changeColor() {
+        backgroundColor = .blue
     }
 }

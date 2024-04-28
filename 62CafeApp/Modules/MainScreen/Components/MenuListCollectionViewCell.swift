@@ -140,11 +140,11 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         )
     }
     
-    func setData(menuList: MenuListModel) {
-        imageView.image = UIImage(named: menuList.image)
-        titleLabel.text = menuList.title
-        descriptionLabel.text = menuList.description
-        priceLabel.text = menuList.price
+    func fill(with item: Products.ProductsModel) {
+        imageView.image = UIImage(named: item.image)
+        titleLabel.text = item.name
+        descriptionLabel.text = item.type
+        priceLabel.text = "\(item.price) c"
     }
     
     @objc
@@ -157,8 +157,8 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         delegate?.decreaseTap()
     }
     
-    func fill(with item: CounterModel) {
-        countLabel.text = String(item.number)
-    }
+//    func fill(with item: CounterModel) {
+//        countLabel.text = String(item.number)
+//    }
 
 }

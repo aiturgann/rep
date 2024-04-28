@@ -1,0 +1,42 @@
+{
+    "products": [
+        {
+            "image": "1st",
+            "product_name": "Капучино",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 140
+        },
+        {
+            "image": "2nd",
+            "product_name": "Латте",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 140
+        },
+        {
+            "image": "3rd",
+            "product_name": "Американо",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 100
+        },
+        {
+            "image": "4th",
+            "product_name": "Раф",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 170
+        },
+        {
+            "image": "5th",
+            "product_name": "Эспрессо",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 100
+        },
+        {
+            "image": "6th",
+            "product_name": "Мокко",
+            "ProductType": "Кофейный напиток",
+            "Product_Price": 190
+        }
+    ]
+}
+
+

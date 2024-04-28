@@ -27,7 +27,7 @@ class MainView: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "00"
+        label.text = "Кофе"
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = .systemFont(ofSize: 20)
         return label
@@ -39,43 +39,30 @@ class MainView: UIView {
         layout.minimumLineSpacing = 20
         layout.scrollDirection = .vertical
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        view.showsHorizontalScrollIndicator = false
+        view.showsVerticalScrollIndicator = false
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let title: [SectionsModel] = [SectionsModel(title: "Кофе"),
-                                  SectionsModel(title: "Десерты"),
-                                  SectionsModel(title: "Выпечка"),
-                                  SectionsModel(title: "Напитки"),
-                                  SectionsModel(title: "Торты")]
+    private var categories: [CategoryModel] = [] {
+        didSet {
+            categories.forEach { category in
+                productsC[category] = []
+            }
+        }
+    }
     
-    let menulist: [MenuListModel] = [MenuListModel(image: "cap",
-                                                   title: "Капучино",
-                                                   description: "Кофейный напиток",
-                                                   price: "140c"),
-                                     MenuListModel(image: "latt",
-                                                   title: "Латте",
-                                                   description: "Кофейный напиток",
-                                                   price: "140c"),
-                                     MenuListModel(image: "amer",
-                                                   title: "Американо",
-                                                   description: "Кофейный напиток",
-                                                   price: "100c"),
-                                     MenuListModel(image: "raff",
-                                                   title: "Раф",
-                                                   description: "Кофейный напиток",
-                                                   price: "170c"),
-                                     MenuListModel(image: "ess",
-                                                   title: "Эспрессо",
-                                                   description: "Кофейный напиток",
-                                                   price: "100c"),
-                                     MenuListModel(image: "mocc",
-                                                   title: "Мокко",
-                                                   description: "Кофейный напиток",
-                                                   price: "120c")]
+    private var products: [Products.ProductsModel] = []
+    
+    private var productsC: [CategoryModel: [Products.ProductsModel]] = [:]
+    
+    private var selectedCategory: CategoryModel? {
+        didSet {
+            guard selectedCategory != nil else { return }
+            menuListCollectionView.reloadData()
+        }
+    }
 
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -90,6 +77,7 @@ class MainView: UIView {
         setupSubviews()
         setupConstraints()
         
+        sectionsCollectionView.delegate = self
         sectionsCollectionView.dataSource = self
         sectionsCollectionView.register(SectionsCollectionViewCell.self,
                                         forCellWithReuseIdentifier: SectionsCollectionViewCell.reuseId)
@@ -107,23 +95,33 @@ class MainView: UIView {
     
     private func setupConstraints() {
         NSLayoutConstraint.activate(
-    [
-        sectionsCollectionView.topAnchor.constraint(equalTo: topAnchor),
-        sectionsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        sectionsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        sectionsCollectionView.heightAnchor.constraint(equalToConstant: 50),
-        
-        titleLabel.topAnchor.constraint(equalTo: sectionsCollectionView.bottomAnchor, constant: 10),
-        titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
-        titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
-        titleLabel.heightAnchor.constraint(equalToConstant: 24),
-        
-        menuListCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
-        menuListCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
-        menuListCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        menuListCollectionView.heightAnchor.constraint(equalToConstant: UIScreen.main.bounds.height)
-    ]
+            [
+                sectionsCollectionView.topAnchor.constraint(equalTo: topAnchor),
+                sectionsCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                sectionsCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                sectionsCollectionView.heightAnchor.constraint(equalToConstant: 50),
+                
+                titleLabel.topAnchor.constraint(equalTo: sectionsCollectionView.bottomAnchor, constant: 10),
+                titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
+                titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+                titleLabel.heightAnchor.constraint(equalToConstant: 24),
+                
+                menuListCollectionView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 10),
+                menuListCollectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
+                menuListCollectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
+                menuListCollectionView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ]
         )
+    }
+    
+    func fill(with categories: [CategoryModel]) {
+        self.categories = categories
+        sectionsCollectionView.reloadData()
+    }
+    
+    func fill(with products: [Products.ProductsModel]) {
+        self.productsC[selectedCategory ?? .init(categoryName: "Кофе")] = products
+        menuListCollectionView.reloadData()
     }
     
 }
@@ -131,22 +129,28 @@ class MainView: UIView {
 extension MainView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == sectionsCollectionView {
-            return title.count
+            return categories.count
         } else {
-            return menulist.count
+            return productsC[selectedCategory ?? .init(categoryName: "Кофе")]?.count ?? .zero
         }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == sectionsCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SectionsCollectionViewCell.reuseId, for: indexPath) as! SectionsCollectionViewCell
-            cell.setData(model: title[indexPath.row])
-            cell.backgroundColor = .magenta
-            cell.layer.cornerRadius = 12
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: SectionsCollectionViewCell.reuseId,
+                for: indexPath
+            ) as! SectionsCollectionViewCell
+            cell.fill(with: categories[indexPath.row])
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MenuListCollectionViewCell.reuseId, for: indexPath) as! MenuListCollectionViewCell
-            cell.setData(menuList: menulist[indexPath.row])
+            let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: MenuListCollectionViewCell.reuseId,
+                for: indexPath
+            ) as! MenuListCollectionViewCell
+            if let product = productsC[selectedCategory ?? .init(categoryName: "Кофе")]?[indexPath.row] {
+                cell.fill(with: product)
+            }
             return cell
         }
     }
@@ -154,6 +158,12 @@ extension MainView: UICollectionViewDataSource {
 
 extension MainView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        ()
+        
+        let title = categories[indexPath.row]
+        titleLabel.text = title.categoryName
+        
+        if collectionView == sectionsCollectionView {
+            selectedCategory = categories[indexPath.row]
+        }
     }
 }

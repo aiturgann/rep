@@ -16,12 +16,16 @@ class MainViewController: UIViewController {
     }()
     
     private var counter = CounterModel(number: 0)
+    
+    private let parser = JSONParser()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setup()
         setupNavigationItem()
+        getCategories()
+        getProducts()
     }
     
     private func setupNavigationItem() {
@@ -47,9 +51,23 @@ class MainViewController: UIViewController {
         mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
         mainView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
         mainView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-        mainView.heightAnchor.constraint(equalToConstant: 50)
+        mainView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
     ]
         )
+    }
+    
+    private func getCategories() {
+        parser.getCategories { [weak self] categories in
+            guard let self else { return }
+            mainView.fill(with: categories)
+        }
+    }
+    
+    private func getProducts() {
+        parser.getProducts { [weak self] products in
+            guard let self else { return }
+            mainView.fill(with: products)
+        }
     }
     
     @objc
