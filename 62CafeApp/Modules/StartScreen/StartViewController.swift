@@ -17,6 +17,7 @@ class StartViewController: BaseViewController {
     
     override func setup() {
         super.setup()
+        startView.delegate = self
         setupSubviews()
         setupConstraints()
     }
@@ -37,9 +38,11 @@ class StartViewController: BaseViewController {
             ]
         )
     }
-    
+}
+
+extension StartViewController: StartViewDelegate {
     func signInButtonTapped() {
-        let vc = AuthorizationViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        let viewController = AuthorizationViewController()
+        navigationController?.pushViewController(viewController, animated: true)
     }
 }

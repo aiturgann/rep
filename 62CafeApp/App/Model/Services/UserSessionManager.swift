@@ -23,7 +23,7 @@ final class UserSessionManager {
         return sessionDate > currentDate
     }
     
-    func saveSession(with name: String, phoneNumber: String) {
+    func saveSession(with name: String, phoneNumber: String, completion: () -> Void) {
         if name == "Geeks" && phoneNumber == "00" {
             print("Session is saved")
             let currentDate = Date()
@@ -33,6 +33,7 @@ final class UserSessionManager {
                 to: currentDate
             )
             UserDefaults.standard.setValue(thirtySecondsAfter, forKey: "sessionDate")
+            completion()
         } else {
             print("The data isn't correct")
         }

@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol StartViewDelegate: AnyObject {
+    func signInButtonTapped()
+}
+
 class StartView: BaseView {
     
     private let firstTitleLabel: UILabel = {
@@ -33,19 +37,18 @@ class StartView: BaseView {
         button.setTitle("Войти", for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 18
-        button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    weak var controller: StartViewController?
-    
+    weak var delegate: StartViewDelegate?
+        
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
         
-//        signInButton.addTarget(controller.self, action: #selector(signInButtonTapped), for: .touchUpInside)
+        signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
     }
     
     override func setupSubviews() {
@@ -77,6 +80,6 @@ class StartView: BaseView {
     
     @objc
     private func signInButtonTapped() {
-        controller?.signInButtonTapped()
+        delegate?.signInButtonTapped()
     }
 }

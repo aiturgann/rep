@@ -20,6 +20,7 @@ class AuthorizationViewController: BaseViewController {
         super.setup()
         setupSubviews()
         setupConstraints()
+        signInButtonTapped()
     }
     
     override func setupSubviews() {
@@ -40,20 +41,26 @@ class AuthorizationViewController: BaseViewController {
     }
     
     func signInButtonTapped() {
-        let vc = MainViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        authorizationView.signInTapped = { [weak self] in
+            guard let self else { return }
+            validateTextField()
+        }
     }
     
-    func validateTextField(name: UITextField, number: UITextField) {
+    func validateTextField() {
         guard
-            let name = name.text, !name.isEmpty,
-            let phoneNumber = number.text, !phoneNumber.isEmpty
+            case let name = authorizationView.nameText, !name.isEmpty,
+            case let phoneNumber = authorizationView.phoneNumberText, !phoneNumber.isEmpty
         else {
             return
         }
         UserSessionManager.shared.saveSession(
             with: name,
             phoneNumber: phoneNumber
-        )
+        ) { [weak self] in
+            guard let self else { return }
+            let vc = MainViewController()
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
 }

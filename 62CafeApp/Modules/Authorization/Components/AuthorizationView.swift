@@ -62,7 +62,7 @@ class AuthorizationView: BaseView {
     }()
     
     private let signInButton: UIButton = {
-        let button = UIButton(type: .system)
+        let button = UIButton()
         button.setTitle("Войти", for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 18
@@ -70,14 +70,22 @@ class AuthorizationView: BaseView {
         return button
     }()
     
-//    weak var controller: AuthorizationViewControllerProtocol?
+    var nameText: String {
+        return nameTextField.text ?? ""
+    }
     
+    var phoneNumberText: String {
+        return phoneNumberTextField.text ?? ""
+    }
+    
+    var signInTapped: (() -> Void)?
+        
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
         
-        signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
+        signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
     }
     
     override func setupSubviews() {
@@ -125,26 +133,7 @@ class AuthorizationView: BaseView {
     }
     
     @objc
-    private func signInTapped() {
-        
-        let vc = AuthorizationViewController()
-        let vcc = MainViewController()
-        vc.navigationController?.pushViewController(vcc, animated: true)
-        
-//        controller?.navigationController?.pushViewController(StartViewController(), animated: true)
-//        if controller == nil {
-//            print("nil")
-//        }
-//        
-//        guard
-//            let name = nameTextField.text, !name.isEmpty,
-//            let phoneNumber = phoneNumberTextField.text, !phoneNumber.isEmpty
-//        else {
-//            return
-//        }
-//        UserSessionManager.shared.saveSession(
-//            with: name,
-//            phoneNumber: phoneNumber
-//        )
+    private func signInButtonTapped() {
+        signInTapped?()
     }
 }
