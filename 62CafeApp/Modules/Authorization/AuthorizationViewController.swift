@@ -7,38 +7,53 @@
 
 import UIKit
 
-class AuthorizationViewController: UIViewController {
+
+class AuthorizationViewController: BaseViewController {
     
     private let authorizationView: AuthorizationView = {
         let view = AuthorizationView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setup()
-    }
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         view.addSubview(authorizationView)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
-    [
-        authorizationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
-        authorizationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        authorizationView.heightAnchor.constraint(equalToConstant: 200),
-        authorizationView.widthAnchor.constraint(equalToConstant: view.frame.width - 32)
-    ]
+            [
+                authorizationView.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
+                authorizationView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+                authorizationView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                authorizationView.widthAnchor.constraint(equalToConstant: view.frame.width - 32)
+            ]
         )
     }
-
+    
+    func signInButtonTapped() {
+        let vc = MainViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    func validateTextField(name: UITextField, number: UITextField) {
+        guard
+            let name = name.text, !name.isEmpty,
+            let phoneNumber = number.text, !phoneNumber.isEmpty
+        else {
+            return
+        }
+        UserSessionManager.shared.saveSession(
+            with: name,
+            phoneNumber: phoneNumber
+        )
+    }
 }

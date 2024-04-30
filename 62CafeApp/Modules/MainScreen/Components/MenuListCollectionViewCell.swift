@@ -75,8 +75,6 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
-    weak var delegate: MainViewDelegate?
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -147,18 +145,10 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         priceLabel.text = "\(item.price) c"
     }
     
-    @objc
-    private func increaseButtonTapped() {
-        delegate?.increaseTap()
+    func fill2(with item: MenuListModel!) {
+        imageView.image = UIImage(named: item.image)
+        titleLabel.text = item.title
+        descriptionLabel.text = item.description
+        priceLabel.text = "\(item.price) c"
     }
-    
-    @objc
-    private func decreaseButtonTapped() {
-        delegate?.decreaseTap()
-    }
-    
-//    func fill(with item: CounterModel) {
-//        countLabel.text = String(item.number)
-//    }
-
 }

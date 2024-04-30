@@ -7,7 +7,7 @@
 
 import UIKit
 
-class AuthorizationView: UIView {
+class AuthorizationView: BaseView {
     
     private let firstTitleLabel: UILabel = {
         let label = UILabel()
@@ -36,9 +36,22 @@ class AuthorizationView: UIView {
         return label
     }()
     
+    private let nameTextField: UITextField = {
+        let textField = UITextField()
+        textField.placeholder = "Enter your name"
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 8))
+        textField.leftView = leftView
+        textField.leftViewMode = .always
+        textField.backgroundColor = .systemGray6
+        textField.layer.cornerRadius = 18
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+    
     private let phoneNumberTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "000 000 000"
+        textField.placeholder = "555 555 555"
+        textField.keyboardType = .phonePad
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 8))
         textField.leftView = leftView
         textField.leftViewMode = .always
@@ -49,38 +62,36 @@ class AuthorizationView: UIView {
     }()
     
     private let signInButton: UIButton = {
-        let button = UIButton()
+        let button = UIButton(type: .system)
         button.setTitle("Войти", for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 18
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
-    }
+//    weak var controller: AuthorizationViewControllerProtocol?
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
+        
+        signInButton.addTarget(self, action: #selector(signInTapped), for: .touchUpInside)
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         addSubview(firstTitleLabel)
         addSubview(secondTitleLabel)
         addSubview(thirdTitleLabel)
+        addSubview(nameTextField)
         addSubview(phoneNumberTextField)
         addSubview(signInButton)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
             [
                 firstTitleLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -95,7 +106,12 @@ class AuthorizationView: UIView {
                 thirdTitleLabel.leadingAnchor.constraint(equalTo: leadingAnchor),
                 thirdTitleLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
                 
-                phoneNumberTextField.topAnchor.constraint(equalTo: thirdTitleLabel.bottomAnchor, constant: 10),
+                nameTextField.topAnchor.constraint(equalTo: thirdTitleLabel.bottomAnchor, constant: 10),
+                nameTextField.leadingAnchor.constraint(equalTo: leadingAnchor),
+                nameTextField.trailingAnchor.constraint(equalTo: trailingAnchor),
+                nameTextField.heightAnchor.constraint(equalToConstant: 50),
+                
+                phoneNumberTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 10),
                 phoneNumberTextField.leadingAnchor.constraint(equalTo: leadingAnchor),
                 phoneNumberTextField.trailingAnchor.constraint(equalTo: trailingAnchor),
                 phoneNumberTextField.heightAnchor.constraint(equalToConstant: 50),
@@ -108,4 +124,27 @@ class AuthorizationView: UIView {
         )
     }
     
+    @objc
+    private func signInTapped() {
+        
+        let vc = AuthorizationViewController()
+        let vcc = MainViewController()
+        vc.navigationController?.pushViewController(vcc, animated: true)
+        
+//        controller?.navigationController?.pushViewController(StartViewController(), animated: true)
+//        if controller == nil {
+//            print("nil")
+//        }
+//        
+//        guard
+//            let name = nameTextField.text, !name.isEmpty,
+//            let phoneNumber = phoneNumberTextField.text, !phoneNumber.isEmpty
+//        else {
+//            return
+//        }
+//        UserSessionManager.shared.saveSession(
+//            with: name,
+//            phoneNumber: phoneNumber
+//        )
+    }
 }

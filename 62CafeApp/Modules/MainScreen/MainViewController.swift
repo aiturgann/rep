@@ -7,22 +7,18 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+class MainViewController: BaseViewController {
     
     private let mainView: MainView = {
         let view = MainView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
-    private var counter = CounterModel(number: 0)
-    
+        
     private let parser = JSONParser()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
-        setup()
         setupNavigationItem()
         getCategories()
         getProducts()
@@ -36,16 +32,19 @@ class MainViewController: UIViewController {
         navigationItem.setHidesBackButton(true, animated: false)
     }
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         view.addSubview(mainView)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
     [
         mainView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
@@ -70,9 +69,12 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc
-    private func rightBarButtonItemTapped() {
-        
+    func navigation() {
+        let vc = ProductInfoViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
+    
+    @objc
+    private func rightBarButtonItemTapped() { }
 
 }

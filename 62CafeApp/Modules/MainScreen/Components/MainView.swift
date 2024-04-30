@@ -7,12 +7,7 @@
 
 import UIKit
 
-protocol MainViewDelegate: AnyObject {
-     func increaseTap()
-     func decreaseTap()
-}
-
-class MainView: UIView {
+class MainView: BaseView {
     
     private let sectionsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -62,18 +57,11 @@ class MainView: UIView {
             menuListCollectionView.reloadData()
         }
     }
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setup()
-    }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
-    }
+    weak var controller: MainViewController?
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
         
@@ -82,18 +70,21 @@ class MainView: UIView {
         sectionsCollectionView.register(SectionsCollectionViewCell.self,
                                         forCellWithReuseIdentifier: SectionsCollectionViewCell.reuseId)
         
+        menuListCollectionView.delegate = self
         menuListCollectionView.dataSource = self
         menuListCollectionView.register(MenuListCollectionViewCell.self,
                                         forCellWithReuseIdentifier: MenuListCollectionViewCell.reuseId)
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         addSubview(sectionsCollectionView)
         addSubview(titleLabel)
         addSubview(menuListCollectionView)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
             [
                 sectionsCollectionView.topAnchor.constraint(equalTo: topAnchor),
@@ -159,11 +150,15 @@ extension MainView: UICollectionViewDataSource {
 extension MainView: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let title = categories[indexPath.row]
-        titleLabel.text = title.categoryName
-        
         if collectionView == sectionsCollectionView {
+            let title = categories[indexPath.row]
+            titleLabel.text = title.categoryName
             selectedCategory = categories[indexPath.row]
+        } else {
+            controller?.navigation()
+            if controller == nil {
+                print("nil")
+            }
         }
     }
 }

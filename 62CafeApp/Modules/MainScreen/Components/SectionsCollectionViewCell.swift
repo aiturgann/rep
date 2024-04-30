@@ -52,8 +52,4 @@ class SectionsCollectionViewCell: UICollectionViewCell {
     func fill(with item: CategoryModel) {
         titleLabel.text = item.categoryName
     }
-    
-    func changeColor() {
-        backgroundColor = .blue
-    }
 }

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class StartView: UIView {
+class StartView: BaseView {
     
     private let firstTitleLabel: UILabel = {
         let label = UILabel()
@@ -33,33 +33,30 @@ class StartView: UIView {
         button.setTitle("Войти", for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 18
+        button.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .white
-        setup()
-    }
     
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        setup()
-    }
+    weak var controller: StartViewController?
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
+        
+//        signInButton.addTarget(controller.self, action: #selector(signInButtonTapped), for: .touchUpInside)
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         addSubview(firstTitleLabel)
         addSubview(secondTitleLabel)
         addSubview(signInButton)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
             [
                 firstTitleLabel.topAnchor.constraint(equalTo: topAnchor),
@@ -78,5 +75,8 @@ class StartView: UIView {
         )
     }
     
-//
+    @objc
+    private func signInButtonTapped() {
+        controller?.signInButtonTapped()
+    }
 }

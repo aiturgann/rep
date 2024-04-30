@@ -7,30 +7,27 @@
 
 import UIKit
 
-class StartViewController: UIViewController {
+class StartViewController: BaseViewController {
     
     private let startView: StartView = {
         let view = StartView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setup()
-    }
     
-    private func setup() {
+    override func setup() {
+        super.setup()
         setupSubviews()
         setupConstraints()
     }
     
-    private func setupSubviews() {
+    override func setupSubviews() {
+        super.setupSubviews()
         view.addSubview(startView)
     }
     
-    private func setupConstraints() {
+    override func setupConstraints() {
+        super.setupConstraints()
         NSLayoutConstraint.activate(
             [
                 startView.topAnchor.constraint(equalTo: view.topAnchor, constant: 200),
@@ -40,5 +37,9 @@ class StartViewController: UIViewController {
             ]
         )
     }
-
+    
+    func signInButtonTapped() {
+        let vc = AuthorizationViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
