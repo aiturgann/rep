@@ -11,19 +11,28 @@ let json = """
    {
       "categories": [
           {
-              "categoryName": "Кофе"
+              "categoryName": "Кофе",
+              "id": "coffee"
           },
           {
-              "categoryName": "Десерты"
+              "categoryName": "Десерты",
+              "id": "dessert"
           },
           {
-              "categoryName": "Выпечка"
+              "categoryName": "Выпечка",
+              "id": "bake"
           },
           {
-              "categoryName": "Напитки"
+              "categoryName": "Лимонады",
+              "id": "lemonade"
           },
           {
-              "categoryName": "Торты"
+              "categoryName": "Торты",
+              "id": "cake"
+          },
+          {
+              "categoryName": "Мороженое",
+              "id": "icecream"
           }
       ]
 

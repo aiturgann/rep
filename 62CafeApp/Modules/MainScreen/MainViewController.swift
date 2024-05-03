@@ -16,12 +16,15 @@ class MainViewController: BaseViewController {
     }()
         
     private let parser = JSONParser()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationItem()
         getCategories()
         getProducts()
+        
+        mainView.delegate = self
     }
     
     private func setupNavigationItem() {
@@ -56,18 +59,34 @@ class MainViewController: BaseViewController {
     }
     
     private func getCategories() {
-        parser.getCategories { [weak self] categories in
-            guard let self else { return }
-            mainView.fill(with: categories)
+            parser.getItems(from: jsonData) { [weak self] (result: Result<Category, JSONParser.CustomError>) in
+                guard let self else { return }
+                switch result {
+                case .success(let model):
+                    mainView.fill(with: model.categories)
+                case.failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
-    }
-    
-    private func getProducts() {
-        parser.getProducts { [weak self] products in
-            guard let self else { return }
-            mainView.fill(with: products)
+        
+        private func getProducts() {
+            guard let path = Bundle.main.path(forResource: "Products", ofType: "json"),
+                  case let url = URL(fileURLWithPath: path),
+                  let data = try? Data(contentsOf: url) else {
+                return
+            }
+            
+            JSONParser().getItems(from: data) { (result: Result<Products, JSONParser.CustomError>) in
+                switch result {
+                case .success(let productCategory):
+                    mainView.fill(
+                        with: productCategory.products)
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
-    }
     
     func navigation() {
         let vc = ProductInfoViewController()
@@ -77,4 +96,15 @@ class MainViewController: BaseViewController {
     @objc
     private func rightBarButtonItemTapped() { }
 
+}
+
+extension MainViewController: MainViewDelegate {
+    func didCellTapped(with item: Products.ProductsModel) {
+        let vc = ProductInfoViewController()
+        vc.selectedImage = item.image
+        vc.selectedName = item.name
+        vc.selectedDescription = item.type
+        vc.selectedPrice = "\(item.price)"
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }

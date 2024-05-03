@@ -15,24 +15,23 @@ class ProductInfoViewController: BaseViewController {
         return view
     }()
     
-    let products: [MenuListModel] = [
-        MenuListModel(image: "cap",
-                      title: "Cappuccino",
-                      description: "Coffee",
-                      price: "240"),
-        MenuListModel(image: "raff",
-                      title: "Raff",
-                      description: "Coffee",
-                      price: "200"),
-        MenuListModel(image: "mocc",
-                      title: "Mocco",
-                      description: "Coffee",
-                      price: "190")]
+    private let parser = JSONParser()
+    
+    var selectedImage = ""
+    
+    var selectedName = ""
+    
+    var selectedDescription = ""
+    
+    var selectedPrice = ""
     
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
+        
+        getProducts()
+        fill()
     }
     
     override func setupSubviews() {
@@ -50,5 +49,34 @@ class ProductInfoViewController: BaseViewController {
                 productionInfoView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
             ]
         )
+    }
+    
+    private func fill() {
+        productionInfoView.fill(
+            with: selectedImage,
+            name: selectedName,
+            description: selectedDescription,
+            price: selectedPrice
+        )
+    }
+    
+    private func getProducts() {
+        guard let path = Bundle.main.path(forResource: "Products", ofType: "json"),
+              case let url = URL(fileURLWithPath: path),
+              let data = try? Data(contentsOf: url) else {
+            return
+        }
+        
+        parser.getItems(from: data) { (result: Result<Products, JSONParser.CustomError>) in
+            switch result {
+            case .success(let products):
+                let additionalItems = products.products.filter {
+                    $0.id == .additional
+                }
+                productionInfoView.fill(with: additionalItems)
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
 }

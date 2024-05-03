@@ -46,4 +46,21 @@ struct JSONParser {
             print("Ошибка: \(error.localizedDescription)")
         }
     }
+    
+    enum CustomError: String, Error {
+        case incorrectFormat = "Неправильный формат"
+    }
+    
+    func getItems<Model: Decodable>(
+        from data: Data,
+        completion: (Result<Model, CustomError>) -> Void
+    ) {
+        do {
+            let model = try JSONDecoder().decode(Model.self, from: data)
+            completion(.success(model))
+        } catch {
+            print("Error decoding JSON: \(error)")
+            completion(.failure(.incorrectFormat))
+        }
+    }
 }

@@ -1,40 +1,277 @@
 {
     "products": [
         {
-            "image": "1st",
+            "image": "cappuccino",
             "product_name": "Капучино",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 140
+            "Product_Price": 140,
+            "id": "coffee"
         },
         {
-            "image": "2nd",
+            "image": "latte",
             "product_name": "Латте",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 140
+            "Product_Price": 140,
+            "id": "coffee"
         },
         {
-            "image": "3rd",
+            "image": "americano",
             "product_name": "Американо",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 100
+            "Product_Price": 100,
+            "id": "coffee"
         },
         {
-            "image": "4th",
+            "image": "raff",
             "product_name": "Раф",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 170
+            "Product_Price": 170,
+            "id": "coffee"
         },
         {
-            "image": "5th",
+            "image": "espresso",
             "product_name": "Эспрессо",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 100
+            "Product_Price": 100,
+            "id": "coffee"
         },
         {
-            "image": "6th",
+            "image": "mocc",
             "product_name": "Мокко",
             "ProductType": "Кофейный напиток",
-            "Product_Price": 190
+            "Product_Price": 190,
+            "id": "coffee"
+        },
+        {
+            "image": "tiramisu",
+            "product_name": "Тирамису",
+            "ProductType": "Десерт",
+            "Product_Price": 140,
+            "id": "dessert"
+        },
+        {
+            "image": "mochi",
+            "product_name": "Моти",
+            "ProductType": "Десерт",
+            "Product_Price": 140,
+            "id": "dessert"
+        },
+        {
+            "image": "macarons",
+            "product_name": "Макаронсы",
+            "ProductType": "Десерт",
+            "Product_Price": 100,
+            "id": "dessert"
+        },
+        {
+            "image": "tartalets",
+            "product_name": "Тарталетки",
+            "ProductType": "Десерт",
+            "Product_Price": 170,
+            "id": "dessert"
+        },
+        {
+            "image": "flan",
+            "product_name": "Флан",
+            "ProductType": "Десерт",
+            "Product_Price": 100,
+            "id": "dessert"
+        },
+        {
+            "image": "profetroles",
+            "product_name": "Профитроли",
+            "ProductType": "Десерт",
+            "Product_Price": 190,
+            "id": "dessert"
+        },
+        {
+            "image": "cruassan",
+            "product_name": "Круассан",
+            "ProductType": "Выпечка",
+            "Product_Price": 140,
+            "id": "bake"
+        },
+        {
+            "image": "cinnabon",
+            "product_name": "Булочка с корицей",
+            "ProductType": "Выпечка",
+            "Product_Price": 140,
+            "id": "bake"
+        },
+        {
+            "image": "shoss",
+            "product_name": "Шоссон",
+            "ProductType": "Выпечка",
+            "Product_Price": 100,
+            "id": "bake"
+        },
+        {
+            "image": "madlen",
+            "product_name": "Мадлен",
+            "ProductType": "Выпечка",
+            "Product_Price": 170,
+            "id": "bake"
+        },
+        {
+            "image": "beignet",
+            "product_name": "Бенье",
+            "ProductType": "Выпечка",
+            "Product_Price": 100,
+            "id": "bake"
+        },
+        {
+            "image": "brioche",
+            "product_name": "Бриошь",
+            "ProductType": "Выпечка",
+            "Product_Price": 190,
+            "id": "bake"
+        },
+        {
+            "image": "lemon",
+            "product_name": "Лимонный",
+            "ProductType": "Лимонад",
+            "Product_Price": 140,
+            "id": "lemonade"
+        },
+        {
+            "image": "straw",
+            "product_name": "Клубника-апельсин",
+            "ProductType": "Лимонад",
+            "Product_Price": 140,
+            "id": "lemonade"
+        },
+        {
+            "image": "lime",
+            "product_name": "Мохито",
+            "ProductType": "Лимонад",
+            "Product_Price": 100,
+            "id": "lemonade"
+        },
+        {
+            "image": "grape",
+            "product_name": "Грейпфрут",
+            "ProductType": "Лимонад",
+            "Product_Price": 170,
+            "id": "lemonade"
+        },
+        {
+            "image": "pass",
+            "product_name": "Маракуйя",
+            "ProductType": "Лимонад",
+            "Product_Price": 100,
+            "id": "lemonade"
+        },
+        {
+            "image": "peach",
+            "product_name": "Персик-манго",
+            "ProductType": "Лимонад",
+            "Product_Price": 190,
+            "id": "lemonade"
+        },
+        {
+            "image": "ester",
+            "product_name": "Торт 'Эстерхази'",
+            "ProductType": "Торт",
+            "Product_Price": 140,
+            "id": "cake"
+        },
+        {
+            "image": "med",
+            "product_name": "Торт 'Медовик'",
+            "ProductType": "Торт",
+            "Product_Price": 140,
+            "id": "cake"
+        },
+        {
+            "image": "nap",
+            "product_name": "Торт 'Наполеон'",
+            "ProductType": "Торт",
+            "Product_Price": 100,
+            "id": "cake"
+        },
+        {
+            "image": "pist",
+            "product_name": "Торт 'Фисташковый с малиной'",
+            "ProductType": "Торт",
+            "Product_Price": 170,
+            "id": "cake"
+        },
+        {
+            "image": "choc",
+            "product_name": "Торт 'Три шоколада'",
+            "ProductType": "Торт",
+            "Product_Price": 100,
+            "id": "cake"
+        },
+        {
+            "image": "redvelvet",
+            "product_name": "Торт 'Красный бархат'",
+            "ProductType": "Торт",
+            "Product_Price": 190,
+            "id": "cake"
+        },
+        {
+            "image": "vanilla",
+            "product_name": "Ванильное",
+            "ProductType": "Мороженое",
+            "Product_Price": 140,
+            "id": "icecream"
+        },
+        {
+            "image": "choci",
+            "product_name": "Шоколадное",
+            "ProductType": "Мороженое",
+            "Product_Price": 140,
+            "id": "icecream"
+        },
+        {
+            "image": "strawi",
+            "product_name": "Клубничное",
+            "ProductType": "Мороженое",
+            "Product_Price": 100,
+            "id": "icecream"
+        },
+        {
+            "image": "raspi",
+            "product_name": "Малиновое",
+            "ProductType": "Мороженое",
+            "Product_Price": 170,
+            "id": "icecream"
+        },
+        {
+            "image": "wati",
+            "product_name": "Арбузное",
+            "ProductType": "Мороженое",
+            "Product_Price": 100,
+            "id": "icecream"
+        },
+        {
+            "image": "mint",
+            "product_name": "Мятное",
+            "ProductType": "Мороженое",
+            "Product_Price": 190,
+            "id": "icecream"
+        },
+        {
+            "image": "tea",
+            "product_name": "Холодный чай",
+            "ProductType": "Холодный напиток",
+            "Product_Price": 110,
+            "id": "additional"
+        },
+        {
+            "image": "cookie",
+            "product_name": "Печенье",
+            "ProductType": "Печенье с шоколадной крошкой",
+            "Product_Price": 90,
+            "id": "additional"
+        },
+        {
+            "image": "sand",
+            "product_name": "Сэндвич",
+            "ProductType": "Клубничный сэндвич с кремом",
+            "Product_Price": 160,
+            "id": "additional"
         }
     ]
 }

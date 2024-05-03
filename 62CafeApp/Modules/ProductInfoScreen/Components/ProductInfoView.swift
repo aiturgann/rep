@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol ProductInfoViewDelegate: AnyObject {
+    func fill(with image: String, name: String, desc: String, price: String)
+}
+
 class ProductInfoView: BaseView {
     
     private let imageView: UIImageView = {
@@ -17,28 +21,27 @@ class ProductInfoView: BaseView {
     
     private let whiteView: UIView = {
         let view = UIView()
-        view.backgroundColor = .lightGray
+        view.backgroundColor = .white
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        view.layer.cornerRadius = 20
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.text = "ertef"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "550"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
-        label.text = "rtefsdc vetdrsc dgvfcrdcs drfcrtrfd gvtre frtewds rfedwx rgvtred ftrdeftre tresdfgtr"
         label.numberOfLines = 2
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -98,7 +101,11 @@ class ProductInfoView: BaseView {
         return view
     }()
     
-    var controller: ProductInfoViewController?
+    weak var delegate: ProductInfoViewDelegate?
+    
+    private var products: [Products.ProductsModel] = []
+    
+    
     
     override func setup() {
         super.setup()
@@ -110,7 +117,11 @@ class ProductInfoView: BaseView {
             forCellWithReuseIdentifier: MenuListCollectionViewCell.reuseId
         )
         menuListView.dataSource = self
-        menuListView.backgroundColor = .darkGray
+        
+        delegate?.fill(with: "\(String(describing: imageView.image))", 
+                       name: nameLabel.text ?? "",
+                       desc: descriptionLabel.text ?? "",
+                       price: priceLabel.text ?? "")
     }
     
     override func setupSubviews() {
@@ -135,7 +146,7 @@ class ProductInfoView: BaseView {
                 imageView.topAnchor.constraint(equalTo: topAnchor),
                 imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
                 imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-                imageView.heightAnchor.constraint(equalToConstant: 200),
+                imageView.heightAnchor.constraint(equalToConstant: 300),
                 
                 whiteView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: -20),
                 whiteView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -180,11 +191,23 @@ class ProductInfoView: BaseView {
             ]
         )
     }
+    
+    func fill(with item: [Products.ProductsModel]) {
+        self.products = item
+        menuListView.reloadData()
+    }
+    
+    func fill(with image: String, name: String, description: String, price: String) {
+        imageView.image = UIImage(named: image)
+        nameLabel.text = name
+        descriptionLabel.text = description
+        priceLabel.text = price
+    }
 }
 
 extension ProductInfoView: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return controller?.products.count ?? .zero
+        return products.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -192,10 +215,7 @@ extension ProductInfoView: UICollectionViewDataSource {
             withReuseIdentifier: MenuListCollectionViewCell.reuseId,
             for: indexPath
         ) as! MenuListCollectionViewCell
-        cell.fill2(with: controller?.products[indexPath.row])
-        cell.backgroundColor = .blue
+        cell.fill(with: products[indexPath.row])
         return cell
     }
-    
-    
 }

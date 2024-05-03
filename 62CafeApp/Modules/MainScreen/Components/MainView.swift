@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol MainViewDelegate : AnyObject {
+    func didCellTapped(with item: Products.ProductsModel)
+}
+
 class MainView: BaseView {
     
     private let sectionsCollectionView: UICollectionView = {
@@ -39,26 +43,13 @@ class MainView: BaseView {
         return view
     }()
     
-    private var categories: [CategoryModel] = [] {
-        didSet {
-            categories.forEach { category in
-                productsC[category] = []
-            }
-        }
-    }
+    private var categories: [CategoryModel] = []
     
     private var products: [Products.ProductsModel] = []
     
-    private var productsC: [CategoryModel: [Products.ProductsModel]] = [:]
+    private var selectedCategory = CategoryModel.CategoryId.coffee
     
-    private var selectedCategory: CategoryModel? {
-        didSet {
-            guard selectedCategory != nil else { return }
-            menuListCollectionView.reloadData()
-        }
-    }
-    
-    weak var controller: MainViewController?
+    weak var delegate: MainViewDelegate?
     
     override func setup() {
         super.setup()
@@ -111,7 +102,7 @@ class MainView: BaseView {
     }
     
     func fill(with products: [Products.ProductsModel]) {
-        self.productsC[selectedCategory ?? .init(categoryName: "Кофе")] = products
+        self.products = products
         menuListCollectionView.reloadData()
     }
     
@@ -122,7 +113,9 @@ extension MainView: UICollectionViewDataSource {
         if collectionView == sectionsCollectionView {
             return categories.count
         } else {
-            return productsC[selectedCategory ?? .init(categoryName: "Кофе")]?.count ?? .zero
+            return products.filter { product in
+                product.id == selectedCategory
+            }.count
         }
     }
     
@@ -133,32 +126,37 @@ extension MainView: UICollectionViewDataSource {
                 for: indexPath
             ) as! SectionsCollectionViewCell
             cell.fill(with: categories[indexPath.row])
+            let isSelectedCategory = selectedCategory == categories[indexPath.row].id
+            cell.backgroundColor = isSelectedCategory ? .orange : .white
+            cell.layer.cornerRadius = 12
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: MenuListCollectionViewCell.reuseId,
                 for: indexPath
             ) as! MenuListCollectionViewCell
-            if let product = productsC[selectedCategory ?? .init(categoryName: "Кофе")]?[indexPath.row] {
-                cell.fill(with: product)
-            }
+            let product = products.filter { product in
+                product.id == selectedCategory
+            }[indexPath.row]
+            cell.fill(with: product)
             return cell
         }
     }
 }
 
-extension MainView: UICollectionViewDelegateFlowLayout {
+extension MainView: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         if collectionView == sectionsCollectionView {
-            let title = categories[indexPath.row]
-            titleLabel.text = title.categoryName
-            selectedCategory = categories[indexPath.row]
-        } else {
-            controller?.navigation()
-            if controller == nil {
-                print("nil")
-            }
+            selectedCategory = categories[indexPath.row].id
+            sectionsCollectionView.reloadData()
+            menuListCollectionView.reloadData()
+            titleLabel.text = selectedCategory.title
+        } else if collectionView == menuListCollectionView {
+            let product = products.filter { product in
+                product.id == selectedCategory
+            }[indexPath.row]
+            delegate?.didCellTapped(with: product)
         }
     }
 }

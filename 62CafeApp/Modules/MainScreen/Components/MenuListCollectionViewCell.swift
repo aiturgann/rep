@@ -75,6 +75,10 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    var imageV: String {
+        return "\(String(describing: imageView.image))"
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -142,13 +146,6 @@ class MenuListCollectionViewCell: UICollectionViewCell {
         imageView.image = UIImage(named: item.image)
         titleLabel.text = item.name
         descriptionLabel.text = item.type
-        priceLabel.text = "\(item.price) c"
-    }
-    
-    func fill2(with item: MenuListModel!) {
-        imageView.image = UIImage(named: item.image)
-        titleLabel.text = item.title
-        descriptionLabel.text = item.description
         priceLabel.text = "\(item.price) c"
     }
 }

@@ -12,5 +12,29 @@ struct Category: Decodable {
 }
 
 struct CategoryModel: Decodable, Hashable {
-    let categoryName: String
+    let id: CategoryId
+    
+    
+    enum CategoryId: String, Decodable {
+        case coffee, dessert, bake, lemonade, cake, icecream, additional
+        
+        var title: String {
+            switch self {
+            case .coffee:
+                return "Кофе"
+            case .bake:
+                return "Выпечка"
+            case .cake:
+                return "Торты"
+            case .dessert:
+                return "Десерты"
+            case .icecream:
+                return "Мороженое"
+            case .lemonade:
+                return "Лимонады"
+            default:
+                return ""
+            }
+        }
+    }
 }

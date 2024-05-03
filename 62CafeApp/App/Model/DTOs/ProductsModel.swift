@@ -15,10 +15,11 @@ struct Products: Decodable {
         let image: String
         let name: String
         let type: String
+        let id: CategoryModel.CategoryId
         let price: Int
         
         enum CodingKeys: String, CodingKey {
-            case image
+            case image, id
             case name = "product_name"
             case type = "ProductType"
             case price = "Product_Price"
