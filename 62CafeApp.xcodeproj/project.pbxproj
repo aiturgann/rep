@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		1D053A072BE68A250061CBBC /* ProductsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D053A062BE68A250061CBBC /* ProductsViewController.swift */; };
-		1D053A0A2BE68A520061CBBC /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D053A092BE68A520061CBBC /* ProductsView.swift */; };
 		1D053A0D2BE68B640061CBBC /* ProductCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D053A0C2BE68B640061CBBC /* ProductCollectionViewCell.swift */; };
 		1D053A102BE6BB0B0061CBBC /* ProductDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D053A0F2BE6BB0B0061CBBC /* ProductDetailsViewController.swift */; };
 		1D053A132BE6BB9F0061CBBC /* ProductDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D053A122BE6BB9F0061CBBC /* ProductDetailsView.swift */; };
@@ -55,7 +54,6 @@
 
 /* Begin PBXFileReference section */
 		1D053A062BE68A250061CBBC /* ProductsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsViewController.swift; sourceTree = "<group>"; };
-		1D053A092BE68A520061CBBC /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		1D053A0C2BE68B640061CBBC /* ProductCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCollectionViewCell.swift; sourceTree = "<group>"; };
 		1D053A0F2BE6BB0B0061CBBC /* ProductDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsViewController.swift; sourceTree = "<group>"; };
 		1D053A122BE6BB9F0061CBBC /* ProductDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductDetailsView.swift; sourceTree = "<group>"; };
@@ -158,7 +156,6 @@
 		1D053A082BE68A390061CBBC /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				1D053A092BE68A520061CBBC /* ProductsView.swift */,
 				1D053A0C2BE68B640061CBBC /* ProductCollectionViewCell.swift */,
 				1D13CDF82BE7F69100C0FD5E /* CategoriesCollectionViewCell.swift */,
 			);
@@ -607,7 +604,6 @@
 				1DBE598D2BDE965700893B37 /* BaseViewController.swift in Sources */,
 				1D411EE02BD975E500DDDC68 /* SectionsCollectionViewCell.swift in Sources */,
 				1DBE598F2BDF964B00893B37 /* UserSessionManager.swift in Sources */,
-				1D053A0A2BE68A520061CBBC /* ProductsView.swift in Sources */,
 				1D4629E42BD8CC0700657D91 /* AppDelegate.swift in Sources */,
 				1DBE598B2BDE960800893B37 /* BaseView.swift in Sources */,
 				1D4629E62BD8CC0700657D91 /* SceneDelegate.swift in Sources */,
