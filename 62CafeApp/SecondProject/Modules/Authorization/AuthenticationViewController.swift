@@ -45,14 +45,14 @@ extension AuthenticationViewController: AuthenticationViewDelegate {
     }
     
     func signIn(with phoneNumber: String) {
-            autheticationService.signIn(with: phoneNumber) { result in
-                switch result {
-                case .success:
-                    let vc = VerificationViewController()
-                    self.navigationController?.pushViewController(vc, animated: true)
-                case .failure:
-                    print("incorrect phone number")
-                }
+        autheticationService.signIn(with: phoneNumber) { result in
+            switch result {
+            case .success:
+                let vc = VerificationViewController()
+                self.navigationController?.pushViewController(vc, animated: true)
+            case .failure:
+                print("incorrect phone number")
             }
         }
+    }
 }
