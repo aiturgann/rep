@@ -150,7 +150,6 @@ class ProductInfoView: BaseView {
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).inset(-10)
             make.leading.trailing.equalToSuperview().inset(16)
-//            make.bottom.equalTo(stackView.snp.top).inset(-10)
         }
         stackView.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).inset(-10)

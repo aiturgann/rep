@@ -7,4 +7,6 @@ target '62CafeApp' do
 
   # Pods for 62CafeApp
 pod 'SnapKit'
+pod 'Firebase/Auth'
+pod 'Firebase/Core'
 end

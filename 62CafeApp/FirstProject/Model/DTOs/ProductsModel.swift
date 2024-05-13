@@ -8,7 +8,6 @@
 import Foundation
 
 struct Products: Decodable {
-    
     let products: [ProductsModel]
     
     struct ProductsModel: Decodable {
@@ -25,5 +24,4 @@ struct Products: Decodable {
             case price = "Product_Price"
         }
     }
-    
 }

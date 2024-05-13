@@ -15,10 +15,10 @@ class MainViewController: BaseViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-        
+    
     private let parser = JSONParser()
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationItem()
@@ -68,7 +68,7 @@ class MainViewController: BaseViewController {
             }
         }
     }
-        
+    
     private func getProducts() {
         guard let path = Bundle.main.path(forResource: "Products", ofType: "json"),
               case let url = URL(fileURLWithPath: path),
@@ -87,14 +87,8 @@ class MainViewController: BaseViewController {
         }
     }
     
-    func navigation() {
-        let vc = ProductInfoViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     @objc
     private func rightBarButtonItemTapped() { }
-    
 }
 
 extension MainViewController: MainViewDelegate {
