@@ -10,7 +10,6 @@ import SnapKit
 
 protocol AuthenticationViewDelegate: AnyObject {
     func signIn(with phoneNumber: String)
-    func verifyTextField(with text: UITextField)
 }
 
 class AuthenticationView: BaseView {
@@ -41,7 +40,7 @@ class AuthenticationView: BaseView {
     
     private let phoneNumberTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "+996 555 555 555"
+        textField.placeholder = "+996 706 688 618"
         textField.keyboardType = .phonePad
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 8, height: 8))
         textField.leftView = leftView
@@ -54,8 +53,17 @@ class AuthenticationView: BaseView {
     private let signInButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Проверить", for: .normal)
+        button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .orange
         button.layer.cornerRadius = 18
+        return button
+    }()
+    
+    private let signInWithEmailButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Войти через почту", for: .normal)
+        button.setTitleColor(.orange, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15)
         return button
     }()
     
@@ -80,6 +88,7 @@ class AuthenticationView: BaseView {
         addSubview(thirdTitleLabel)
         addSubview(phoneNumberTextField)
         addSubview(signInButton)
+        addSubview(signInWithEmailButton)
     }
     
     override func setupConstraints() {
@@ -106,13 +115,15 @@ class AuthenticationView: BaseView {
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(50)
         }
+        signInWithEmailButton.snp.makeConstraints { make in
+            make.top.equalTo(signInButton.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(30)
+        }
     }
     
     @objc
     private func signInButtonTapped() {
         delegate?.signIn(with: phoneNumberTextField.text ?? "")
     }
-    
-    @objc
-    private func verifyTextField() { }
 }

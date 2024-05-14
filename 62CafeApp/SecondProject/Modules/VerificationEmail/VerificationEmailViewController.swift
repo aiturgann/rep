@@ -51,7 +51,7 @@ class VerificationEmailViewController: BaseViewController {
 }
 
 extension VerificationEmailViewController: VerificationEmailViewDelegate {
-    func verifyCode(with password: String, email: String) {
+    func verifyEmail(with password: String, email: String) {
         autheticationService?.signIn(with: email, password: password, completion: { result in
             switch result {
             case .success:

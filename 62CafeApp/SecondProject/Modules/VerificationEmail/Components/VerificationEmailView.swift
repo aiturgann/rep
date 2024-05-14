@@ -9,7 +9,7 @@ import UIKit
 import SnapKit
 
 protocol VerificationEmailViewDelegate: AnyObject {
-    func verifyCode(with password: String, email: String)
+    func verifyEmail(with password: String, email: String)
 }
 
 class VerificationEmailView: BaseView {
@@ -32,6 +32,7 @@ class VerificationEmailView: BaseView {
     
     private let enterLabel: UILabel = {
         let label = UILabel()
+        label.textAlignment = .center
         label.text = "Введите код"
         return label
     }()
@@ -101,6 +102,6 @@ class VerificationEmailView: BaseView {
     
     @objc
     private func verify() {
-        delegate?.verifyCode(with: codeTextField.text ?? "", email: emailTextField.text ?? "")
+        delegate?.verifyEmail(with: codeTextField.text ?? "", email: emailTextField.text ?? "")
     }
 }

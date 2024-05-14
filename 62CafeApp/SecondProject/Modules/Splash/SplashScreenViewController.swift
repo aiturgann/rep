@@ -7,23 +7,20 @@
 
 import UIKit
 
-class SplashScreenViewController: UIViewController {
+class SplashScreenViewController: BaseViewController {
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+            super.viewDidLoad()
+            if !UserSessionManager.shared.isSessionActive {
+                let viewController = AuthenticationViewController()
+                let navigation = UINavigationController(rootViewController: viewController)
+                navigation.modalPresentationStyle = .fullScreen
+                navigationController?.present(navigation, animated: false)
+            } else {
+                let viewController = ProductsViewController()
+                let navigation = UINavigationController(rootViewController: viewController)
+                navigation.modalPresentationStyle = .fullScreen
+                navigationController?.present(navigation , animated: false)
+            }
+        }
 }

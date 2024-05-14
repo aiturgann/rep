@@ -19,7 +19,7 @@ class ProductDetailsViewController: BaseViewController {
     
     private var products: ProductModel?
     
-    private var selectedProducts: String?
+    var selectedProducts: String?
 
     override func setup() {
         super.setup()

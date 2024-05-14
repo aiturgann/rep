@@ -40,10 +40,6 @@ class AuthenticationViewController: BaseViewController {
 }
 
 extension AuthenticationViewController: AuthenticationViewDelegate {
-    func verifyTextField(with text: UITextField) {
-        ()
-    }
-    
     func signIn(with phoneNumber: String) {
         autheticationService.signIn(with: phoneNumber) { result in
             switch result {

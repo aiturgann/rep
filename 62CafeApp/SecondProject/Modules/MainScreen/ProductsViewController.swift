@@ -48,8 +48,8 @@ class ProductsViewController: BaseViewController {
     private var categories: [Categories] = []
     
     private var products: [ProductModel] = []
-    
-    private var selectedProduct: ProductModel?
+        
+    private var product: ProductModel?
     
     private var selectedIndex = 0
     
@@ -182,9 +182,10 @@ extension ProductsViewController: UICollectionViewDelegate {
             titleLabel.text = categories[indexPath.row].categoryName
             getProducts(with: selectedCategory)
         } else {
-            selectedProduct = products[indexPath.row]
             let vc = ProductDetailsViewController()
-            navigationController?.pushViewController(vc, animated: true)
+            vc.selectedProducts = product?.productName ?? ""
+            vc.modalPresentationStyle = .fullScreen
+            navigationController?.present(vc, animated: true)
         }
     }
 }

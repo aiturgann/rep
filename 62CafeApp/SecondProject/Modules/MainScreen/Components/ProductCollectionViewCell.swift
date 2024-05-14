@@ -62,6 +62,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
         return button
     }()
     
+    private var imageURL: URL?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -118,8 +120,6 @@ class ProductCollectionViewCell: UICollectionViewCell {
             make.height.width.equalTo(24)
         }
     }
-    
-    private var imageURL: URL?
     
     func fill(with item: ProductModel) {
         productTitle.text = item.productName

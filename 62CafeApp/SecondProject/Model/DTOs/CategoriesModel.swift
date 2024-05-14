@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct CategoriesModel: Codable {
+struct CategoriesModel: Decodable {
     let categories: [Categories]
 }
 
-struct Categories: Codable {
+struct Categories: Decodable {
     let categoryName: String
     
     enum CodingKeys: String, CodingKey {
