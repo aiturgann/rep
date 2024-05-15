@@ -17,15 +17,13 @@ class ProductDetailsViewController: BaseViewController {
     
     private let networkService = NetworkService()
     
-    private var products: ProductModel?
+    var selectedProduct: String?
     
-    var selectedProducts: String?
-
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
-        getProducts(id: selectedProducts ?? "")
+        getProducts(id: selectedProduct!)
     }
     
     override func setupSubviews() {
@@ -54,3 +52,4 @@ class ProductDetailsViewController: BaseViewController {
         }
     }
 }
+

@@ -21,6 +21,7 @@ class AuthenticationViewController: BaseViewController {
         super.setup()
         setupSubviews()
         setupConstraints()
+        authenticationView.delegate = self
     }
     
     override func setupSubviews() {
@@ -50,5 +51,11 @@ extension AuthenticationViewController: AuthenticationViewDelegate {
                 print("incorrect phone number")
             }
         }
+    }
+    
+    func emailTapped() {
+        let vc = VerificationEmailViewController()
+        vc.modalPresentationStyle = .fullScreen
+        navigationController?.present(vc, animated: true)
     }
 }

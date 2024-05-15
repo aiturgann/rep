@@ -15,7 +15,7 @@ class VerificationViewController: BaseViewController {
         return view
     }()
     
-    private var autheticationService: AuthenticationService?
+    private var autheticationService = AuthenticationService()
     
     var phoneNumber: String?
 
@@ -23,6 +23,7 @@ class VerificationViewController: BaseViewController {
         super.setup()
         setupSubviews()
         setupConstraints()
+        verificationView.delegate = self
     }
     
     override func setupSubviews() {
@@ -35,13 +36,14 @@ class VerificationViewController: BaseViewController {
         verificationView.snp.makeConstraints { make in
             make.top.equalToSuperview().inset(200)
             make.leading.trailing.equalToSuperview().inset(16)
+            make.bottom.equalToSuperview()
         }
     }
 }
 
 extension VerificationViewController: VerificationViewDelegate {
     func verifyCode(with code: String) {
-        autheticationService?.verifyPhone(with: code, completion: { result in
+        autheticationService.verifyPhone(with: code, completion: { result in
             switch result {
             case .success:
                 let vc = ProductsViewController()

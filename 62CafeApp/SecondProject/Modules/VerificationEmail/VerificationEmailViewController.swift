@@ -22,12 +22,14 @@ class VerificationEmailViewController: BaseViewController {
         return label
     }()
     
-    private var autheticationService: AuthenticationService?
+    private var autheticationService = AuthenticationService()
 
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
+        
+        verificationEmailView.delegate = self
     }
     
     override func setupSubviews() {
@@ -52,7 +54,7 @@ class VerificationEmailViewController: BaseViewController {
 
 extension VerificationEmailViewController: VerificationEmailViewDelegate {
     func verifyEmail(with password: String, email: String) {
-        autheticationService?.signIn(with: email, password: password, completion: { result in
+        autheticationService.signIn(with: email, password: password, completion: { result in
             switch result {
             case .success:
                 let vc = ProductsViewController()

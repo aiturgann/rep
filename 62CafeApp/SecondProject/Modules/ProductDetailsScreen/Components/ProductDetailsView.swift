@@ -5,82 +5,107 @@
 //  Created by Aiturgan Kurmanbekova on 5/5/24.
 //
 
+
 import UIKit
 import SnapKit
 
-protocol ProductDetailsViewDelegate: AnyObject {
-    func fill(products: [ProductModel])
-}
-
 class ProductDetailsView: BaseView {
-    
-    private let imageView: UIImageView = {
-        let view = UIImageView()
-        view.backgroundColor = .magenta
-        return view
-    }()
     
     private let scrollView: UIScrollView = {
         let view = UIScrollView()
-        view.backgroundColor = .gray
-        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        view.layer.cornerRadius = 20
+        return view
+    }()
+    
+    private let contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private let productImageView: UIImageView = {
+        let imageView = UIImageView()
+        return imageView
+    }()
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 16
         return view
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .bold)
         return label
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.textColor = .orange
         return label
     }()
     
     private let descriptionLabel: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .regular)
         label.numberOfLines = 0
         return label
     }()
-
+        
     override func setup() {
         super.setup()
         setupSubviews()
         setupConstraints()
+        scrollView.delegate = self
+        contentView.backgroundColor = .white
     }
     
     override func setupSubviews() {
         super.setupSubviews()
-        addSubview(imageView)
-        addSubview(scrollView)
-        scrollView.addSubview(titleLabel)
-        scrollView.addSubview(priceLabel)
-        scrollView.addSubview(descriptionLabel)
+        add {
+            scrollView
+        }
+        scrollView.add { contentView }
+        contentView.add {
+            productImageView
+            containerView
+        }
+        containerView.add {
+            titleLabel
+            priceLabel
+            descriptionLabel
+        }
     }
     
     override func setupConstraints() {
         super.setupConstraints()
-        imageView.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
-        }
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).inset(20)
-            make.leading.trailing.bottom.width.equalToSuperview()
+            make.directionalEdges.width.equalToSuperview()
+        }
+        contentView.snp.makeConstraints { make in
+            make.directionalEdges.width.equalToSuperview()
+        }
+        productImageView.snp.makeConstraints { make in
+            make.top.directionalHorizontalEdges.equalToSuperview()
+            make.height.equalTo(320)
+        }
+        containerView.snp.makeConstraints { make in
+            make.top.equalTo(productImageView.snp.bottom).inset(20)
+            make.bottom.directionalHorizontalEdges.equalToSuperview()
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(50)
+            make.top.equalToSuperview().inset(10)
+            make.leading.equalToSuperview().inset(16)
+            make.trailing.equalToSuperview().inset(100)
         }
         priceLabel.snp.makeConstraints { make in
-            make.top.trailing.equalToSuperview().inset(16)
-            make.height.equalTo(50)
+            make.top.equalToSuperview().inset(10)
+            make.trailing.equalToSuperview().inset(20)
         }
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).inset(-10)
-            make.leading.trailing.width.equalToSuperview().inset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(20)
+            make.directionalHorizontalEdges.equalToSuperview().inset(16)
             make.bottom.equalToSuperview()
         }
     }
@@ -88,12 +113,24 @@ class ProductDetailsView: BaseView {
     func fill(with item: ProductModel) {
         titleLabel.text = item.productName
         descriptionLabel.text = item.productDescription
-        ImageURL.shared.getImage(with: item.productImage) { [weak self] result in
+        priceLabel.text = "\(String(describing: item.productId!)) c"
+        ImageURL.shared.getImage(with: item.productImage!) { [weak self] result in
             if case .success(let image) = result {
                 DispatchQueue.main.async {
-                    self?.imageView.image = image
+                    self?.productImageView.image = image
                 }
             }
         }
+    }
+}
+
+extension ProductDetailsView: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let offsetY = scrollView.contentOffset.y
+        let scaleFactor = max(1.0, 1.0 - (offsetY / productImageView.frame.height) * 0.3)
+        guard scaleFactor.isFinite, scaleFactor > 0 else { return }
+        productImageView.transform = CGAffineTransform(scaleX: scaleFactor,
+                                                       y: scaleFactor).translatedBy(x: 0, y: -offsetY / 2)
+        productImageView.frame.origin.y = offsetY
     }
 }

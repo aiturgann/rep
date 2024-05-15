@@ -10,6 +10,7 @@ import SnapKit
 
 protocol AuthenticationViewDelegate: AnyObject {
     func signIn(with phoneNumber: String)
+    func emailTapped()
 }
 
 class AuthenticationView: BaseView {
@@ -79,6 +80,7 @@ class AuthenticationView: BaseView {
         setupConstraints()
         
         signInButton.addTarget(self, action: #selector(signInButtonTapped), for: .touchUpInside)
+        signInWithEmailButton.addTarget(self, action: #selector(signInWithEmailButtonTapped), for: .touchUpInside)
     }
     
     override func setupSubviews() {
@@ -125,5 +127,10 @@ class AuthenticationView: BaseView {
     @objc
     private func signInButtonTapped() {
         delegate?.signIn(with: phoneNumberTextField.text ?? "")
+    }
+    
+    @objc
+    private func signInWithEmailButtonTapped() {
+        delegate?.emailTapped()
     }
 }

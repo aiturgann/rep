@@ -20,7 +20,7 @@ class ProductsViewController: BaseViewController {
     
     private let categoriesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 50)
+        layout.itemSize = CGSize(width: 100, height: 50)
         layout.minimumLineSpacing = 20
         layout.scrollDirection = .horizontal
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -35,7 +35,7 @@ class ProductsViewController: BaseViewController {
     
     private let productsCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 120)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width - 40, height: 100)
         layout.minimumLineSpacing = 20
         layout.scrollDirection = .vertical
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -43,7 +43,7 @@ class ProductsViewController: BaseViewController {
         return view
     }()
     
-    private var networkService: NetworkService?
+    private var networkService = NetworkService()
     
     private var categories: [Categories] = []
     
@@ -52,6 +52,8 @@ class ProductsViewController: BaseViewController {
     private var product: ProductModel?
     
     private var selectedIndex = 0
+    
+    private var selectedCategory: Categories?
     
     override func setup() {
         super.setup()
@@ -88,16 +90,16 @@ class ProductsViewController: BaseViewController {
         }
         categoriesCollectionView.snp.makeConstraints { make in
             make.top.equalTo(searchBar.snp.bottom).offset(20)
-            make.leading.trailing.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(50)
         }
         titleLabel.snp.makeConstraints { make in
-            make.top.equalTo(categoriesCollectionView.snp.bottom).inset(-10)
-            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(categoriesCollectionView.snp.bottom).offset(10)
+            make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(24)
         }
         productsCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).inset(-10)
+            make.top.equalTo(titleLabel.snp.bottom).offset(10)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -112,7 +114,7 @@ class ProductsViewController: BaseViewController {
     }
     
     private func getCategories() {
-        networkService?.getCategories { [weak self] result in
+        networkService.getCategories { [weak self] result in
             DispatchQueue.main.async { [weak self] in guard let self else { return }
                 switch result {
                 case .success(let model):
@@ -131,7 +133,7 @@ class ProductsViewController: BaseViewController {
     }
         
     private func getProducts(with item: Categories) {
-        networkService?.getProducts(with: item.categoryName) { [weak self] result in
+        networkService.getProducts(with: item.categoryName) { [weak self] result in
             DispatchQueue.main.async { [weak self] in guard let self = self else { return }
                 switch result {
                 case .success(let model):
@@ -144,11 +146,20 @@ class ProductsViewController: BaseViewController {
         }
     }
     
+    private func tappedCell(with product: ProductModel) {
+            let vc = ProductDetailsViewController()
+            vc.selectedProduct = product.productId
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    
     @objc 
     private func searchBarEditingChanged() { }
     
     @objc
-    private func rightBarButtonItemTapped() { }
+    private func rightBarButtonItemTapped() {
+        let vc = NotificationViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 extension ProductsViewController: UICollectionViewDataSource {
@@ -162,11 +173,17 @@ extension ProductsViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == categoriesCollectionView {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoriesCollectionViewCell.reuseId, for: indexPath) as! CategoriesCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoriesCollectionViewCell.reuseId, 
+                                                          for: indexPath
+            ) as! CategoriesCollectionViewCell
             cell.fill(with: categories[indexPath.row])
+            cell.backgroundColor = (indexPath.item == selectedIndex) ? .orange : .clear
+            cell.layer.cornerRadius = 20
             return cell
         } else {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCollectionViewCell.reuseId, for: indexPath) as! ProductCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCollectionViewCell.reuseId, 
+                                                          for: indexPath
+            ) as! ProductCollectionViewCell
             cell.fill(with: products[indexPath.row])
             return cell
         }
@@ -182,10 +199,7 @@ extension ProductsViewController: UICollectionViewDelegate {
             titleLabel.text = categories[indexPath.row].categoryName
             getProducts(with: selectedCategory)
         } else {
-            let vc = ProductDetailsViewController()
-            vc.selectedProducts = product?.productName ?? ""
-            vc.modalPresentationStyle = .fullScreen
-            navigationController?.present(vc, animated: true)
+            tappedCell(with: products[indexPath.row])
         }
     }
 }

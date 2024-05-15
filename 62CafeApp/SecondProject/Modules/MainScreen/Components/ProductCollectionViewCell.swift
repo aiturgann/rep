@@ -82,7 +82,6 @@ class ProductCollectionViewCell: UICollectionViewCell {
     private func setupSubviews() {
         addSubview(productImageView)
         addSubview(productTitle)
-        addSubview(productDescription)
         addSubview(stackView)
         stackView.addArrangedSubview(decreaseButton)
         stackView.addArrangedSubview(countLabel)
@@ -96,16 +95,10 @@ class ProductCollectionViewCell: UICollectionViewCell {
             make.height.width.equalTo(72)
         }
         productTitle.snp.makeConstraints { make in
-            make.top.equalToSuperview().inset(20)
-            make.leading.equalTo(productImageView.snp.trailing).inset(-10)
+            make.top.equalToSuperview().inset(30)
+            make.leading.equalTo(productImageView.snp.trailing).offset(10)
             make.trailing.equalToSuperview().inset(10)
             make.height.equalTo(20)
-        }
-        productDescription.snp.makeConstraints { make in
-            make.top.equalTo(productTitle.snp.bottom).inset(-5)
-            make.leading.equalTo(productImageView.snp.trailing).inset(-10)
-            make.trailing.equalToSuperview().inset(10)
-            make.height.equalTo(16)
         }
         stackView.snp.makeConstraints { make in
             make.bottom.equalToSuperview().inset(10)
@@ -123,9 +116,8 @@ class ProductCollectionViewCell: UICollectionViewCell {
     
     func fill(with item: ProductModel) {
         productTitle.text = item.productName
-        productDescription.text = item.productDescription
         
-        if let imageURL = URL(string: item.productImage) {
+        if let imageURL = URL(string: item.productImage!) {
             self.imageURL = imageURL
             getImage()
         }

@@ -6,3 +6,11 @@
 //
 
 import Foundation
+
+struct PaginationModel: Codable {
+    let products: [Product]
+}
+
+struct Product: Codable {
+    let title: String
+}

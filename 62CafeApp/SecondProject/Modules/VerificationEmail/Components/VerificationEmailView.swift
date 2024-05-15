@@ -17,6 +17,7 @@ class VerificationEmailView: BaseView {
     private let userHintLabel: UILabel = {
         let label = UILabel()
         label.text = "Введите ваш почтовый адрес"
+        label.textAlignment = .center
         return label
     }()
     
@@ -62,6 +63,8 @@ class VerificationEmailView: BaseView {
         super.setup()
         setupSubviews()
         setupConstraints()
+        
+        verifyButton.addTarget(self, action: #selector(verify), for: .touchUpInside)
     }
     
     override func setupSubviews() {

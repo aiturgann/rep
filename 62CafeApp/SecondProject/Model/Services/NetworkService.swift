@@ -33,32 +33,36 @@ struct NetworkService {
         }.resume()
     }
     
-    func getProducts(with item: String, complition: @escaping (Result<[ProductModel], Error>) -> Void) {
-        var urlComponents = URLComponents(url:  Constants.baseURL.appendingPathComponent("filter.php"),
-                                          resolvingAgainstBaseURL: false
-        )
-        urlComponents?.queryItems = [ URLQueryItem(name: "c", value: item)]
-        
-        guard let url = urlComponents?.url else { return }
-        let request = URLRequest(url: url)
-        
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let error = error {
-                complition(.failure(error))
-                return
-            }
-            guard let data = data else {
-                complition(.failure(error!))
-                return
-            }
-            do {
-                let model = try decoder.decode(ProductssModel.self, from: data)
-                complition(.success(model.products))
-            } catch {
-                complition(.failure(error))
-            }
-        }.resume()
-    }
+    func getProducts(with category: String, complition: @escaping (Result<[ProductModel], Error>) -> Void) {
+            
+            var urlComponents = URLComponents(url:  Constants.baseURL.appendingPathComponent("filter.php"), resolvingAgainstBaseURL: false)
+            
+            urlComponents?.queryItems = [ URLQueryItem(name: "c", value: category)]
+            
+            guard let url = urlComponents?.url else { return }
+            
+            let request = URLRequest(url: url)
+            
+            URLSession.shared.dataTask(with: request) { data, response, error in
+                if let error = error {
+                    complition(.failure(error))
+                    return
+                }
+                
+                guard let data = data else {
+                    complition(.failure(error!))
+                    return
+                }
+                
+                do {
+                    let model = try decoder.decode(ProductssModel.self, from: data)
+                    complition(.success(model.products))
+                } catch {
+                    complition(.failure(error))
+                 print("error data \(data)")
+                }
+            }.resume()
+        }
     
     func getProductDetails(with productId: String, 
                            complition: @escaping (Result<ProductModel, Error>) -> Void
@@ -113,6 +117,39 @@ struct NetworkService {
             }
             do {
                 let model = try decoder.decode(ProductssModel.self, from: data)
+                complition(.success(model.products))
+            } catch {
+                complition(.failure(error))
+            }
+        }.resume()
+    }
+    
+    func fetchProduct(
+        limit: Int,
+        skip: Int,
+        complition: @escaping (Result<[Product], Error>) -> Void
+    ) {
+        let url = URL(string: "https://dummyjson.com/products")!
+        var urlComponents = URLComponents(url: url, resolvingAgainstBaseURL: false)
+
+        urlComponents?.queryItems = [URLQueryItem(name: "limit", value: String(limit)),
+                                     URLQueryItem(name: "skip", value: String(skip))
+        ]
+        
+        guard let url = urlComponents?.url else { return }
+        let request = URLRequest(url: url)
+        
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                complition(.failure(error))
+                return
+            }
+            guard let data = data else {
+                complition(.failure(error!))
+                return
+            }
+            do {
+                let model = try decoder.decode(PaginationModel.self, from: data)
                 complition(.success(model.products))
             } catch {
                 complition(.failure(error))

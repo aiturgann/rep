@@ -8,19 +8,23 @@
 import Foundation
 
 struct ProductssModel: Decodable {
+    
     let products: [ProductModel]
-}
-
-struct ProductModel: Decodable {
-    let productName: String
-    let productImage: String
-    let productId: String
-    let productDescription: String
     
     enum CodingKeys: String, CodingKey {
+        case products = "meals"
+    }
+}
+struct ProductModel: Decodable {
+    let productId: String?
+    let productName: String?
+    let productImage: String?
+    let productDescription: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case productId = "idMeal"
         case productName = "strMeal"
         case productImage = "strMealThumb"
-        case productId = "idMeal"
         case productDescription = "strInstructions"
     }
 }
